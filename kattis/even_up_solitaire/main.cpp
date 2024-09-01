@@ -1,30 +1,21 @@
 #include <iostream>
-#include <sstream>
-#include <string>
 #include <stack>
 
 int main()
 {
     int numberOfCards = 0;
-    std::cin >> numberOfCards;
-
-    std::cin.ignore(1, '\n');
-
-    std::string cards;
-    std::getline(std::cin, cards);
-
-    std::istringstream cardsStream(cards);
+    scanf("%d", &numberOfCards);
 
     std::stack<int> stack;
 
     int currentNumber;
     for (int iter = 0; iter < numberOfCards; iter++)
     {
-        cardsStream >> currentNumber;
+        scanf("%d", &currentNumber);
 
         if (stack.size() && (currentNumber + stack.top()) % 2 == 0)
         {
-                stack.pop();
+            stack.pop();
         }
         else
         {
@@ -32,5 +23,5 @@ int main()
         }
     }
 
-    std::cout << stack.size() << '\n';
+    printf("%lu\n", stack.size());
 }
