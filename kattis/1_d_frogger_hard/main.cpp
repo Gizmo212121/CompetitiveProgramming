@@ -4,13 +4,10 @@
 #include <unordered_set>
 #include <chrono>
 
-// #define MAX_BOARD_SIZE 200'000
-#define MAX_BOARD_SIZE 1000'000
+#define MAX_BOARD_SIZE 200'000
 
-void runIteration(const int startingIndex, int board[], const int numberOfBoardSquares, std::vector<int>& repeatedIndices, std::vector<int>& previousTotalMagicNumbers, std::vector<std::vector<int>>& subpathDistinctMagicNumbers, int& olist, int& oloop, int& odistinct)
+void runIteration(const int startingIndex, int board[], const int numberOfBoardSquares, std::vector<int>& repeatedIndices, std::vector<int>& previousTotalMagicNumbers, std::vector<std::vector<int>>& subpathDistinctMagicNumbers)
 {
-    olist++;
-
     if (subpathDistinctMagicNumbers[startingIndex].size() > 0)
     {
         return;
@@ -30,8 +27,6 @@ void runIteration(const int startingIndex, int board[], const int numberOfBoardS
 
     while (true)
     {
-        oloop++;
-
         previouslyFoundPieceIndices.push_back(currentIndex);
         repeatedIndices[currentIndex] = startingIndex;
 
@@ -71,8 +66,6 @@ void runIteration(const int startingIndex, int board[], const int numberOfBoardS
                     bool currentValueIsDistinct = true;
                     for (size_t j = 0; j < distinctMagicNumbers.size(); j++)
                     {
-                        odistinct++;
-
                         if (distinctMagicNumbers[j] == board[previouslyFoundPieceIndices[i]])
                         {
                             currentValueIsDistinct = false;
@@ -100,8 +93,6 @@ void runIteration(const int startingIndex, int board[], const int numberOfBoardS
                 bool currentValueIsDistinct = true;
                 for (size_t j = 0; j < distinctMagicNumbers.size(); j++)
                 {
-                    odistinct++;
-
                     if (distinctMagicNumbers[j] == board[previouslyFoundPieceIndices[i]])
                     {
                         currentValueIsDistinct = false;
@@ -129,8 +120,6 @@ void runIteration(const int startingIndex, int board[], const int numberOfBoardS
         bool currentValueIsDistinct = true;
         for (size_t j = 0; j < distinctMagicNumbers.size(); j++)
         {
-            odistinct++;
-
             if (distinctMagicNumbers[j] == board[previouslyFoundPieceIndices[i]])
             {
                 currentValueIsDistinct = false;
@@ -187,13 +176,9 @@ void generatePermutations(int depth, int numberOfBoardSquares, int board[], cons
         std::vector<std::vector<int>> subpathDistinctMagicNumbers(numberOfBoardSquares);
         std::vector<int> previousTotalMagicNumbers(numberOfBoardSquares, -1);
 
-        int olist = 0;
-        int oloop = 0;
-        int odistinct = 0;
-
         for (int i = 0; i < numberOfBoardSquares; i++)
         {
-            runIteration(i, board, numberOfBoardSquares, repeatedIndices, previousTotalMagicNumbers, subpathDistinctMagicNumbers, olist, oloop, odistinct);
+            runIteration(i, board, numberOfBoardSquares, repeatedIndices, previousTotalMagicNumbers, subpathDistinctMagicNumbers);
         }
 
         int sum = 0;
@@ -273,7 +258,7 @@ int main()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(-2000, 2000);
 
-    const int numberOfBoardSquares = 1000000;
+    const int numberOfBoardSquares = 200000;
     int board[MAX_BOARD_SIZE];
     for (size_t i = 0; i < numberOfBoardSquares; i++) { board[i] = dist(gen); }
 
@@ -293,14 +278,9 @@ int main()
         std::vector<std::vector<int>> subpathDistinctMagicNumbers(numberOfBoardSquares);
         std::vector<int> previousTotalMagicNumbers(numberOfBoardSquares, -1);
 
-        int olist = 0;
-        int oloop = 0;
-        int odistinct = 0;
-
-
         for (int i = 0; i < numberOfBoardSquares; i++)
         {
-            runIteration(i, board, numberOfBoardSquares, repeatedIndices, previousTotalMagicNumbers, subpathDistinctMagicNumbers, olist, oloop, odistinct);
+            runIteration(i, board, numberOfBoardSquares, repeatedIndices, previousTotalMagicNumbers, subpathDistinctMagicNumbers);
         }
 
         size_t sum = 0;
@@ -308,10 +288,6 @@ int main()
         for (int i = 0; i < numberOfBoardSquares; i++) { sum += subpathDistinctMagicNumbers[i].size(); }
 
         std::cout << sum << '\n';
-        // std::cout << "N: " << numberOfBoardSquares << '\n';
-        // std::cout << "olist: " << olist << '\n';
-        // std::cout << "oloop: " << oloop << '\n';
-        // std::cout << "odistinct: " << odistinct << '\n';
     }
 
     Timer::print();
