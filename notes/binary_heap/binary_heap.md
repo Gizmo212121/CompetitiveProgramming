@@ -13,3 +13,7 @@ There are 4 key operations that a heap should have:
 - Inserting elements: You should be able to add elements while preserving the heap structure
 - Return max/min element
 - Extracting max/min element: you should be able to remove the largest/smallest element while preserving the heap structure
+
+# Priority Queue
+
+A priority queue is a container wrapper and uses the binary heap in the back end.
