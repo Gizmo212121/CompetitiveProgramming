@@ -2,36 +2,46 @@
 
 int main()
 {
-    int testCases;
-    scanf("%d", &testCases);
+    std::priority_queue<int> lower_priority_queue;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> upper_priority_queue;
+
+    char input = 0;
+    size_t lower_priority_queue_size = 0;
+    size_t upper_priority_queue_size = 0;
 
     std::string output;
     output.reserve(100000);
 
-    for (int i = 0; i < testCases; i++)
+    while (input != EOF)
     {
-        long long medianSum = 0;
+        int number = 0;
+        input = getchar_unlocked();
 
-        std::priority_queue<long long> lower_priority_queue;
-        std::priority_queue<long long, std::vector<long long>, std::greater<long long>> upper_priority_queue;
-
-        char input = 0;
-        size_t lower_priority_queue_size = 0;
-        size_t upper_priority_queue_size = 0;
-
-        int n;
-        scanf("%d", &n);
-
-        getchar_unlocked();
-        for (int j = 0; j < n; j++)
+        if (input == '#')
         {
-            long long number = 0;
-
-            while (true)
+            if (lower_priority_queue_size == upper_priority_queue_size)
             {
-                input = getchar_unlocked();
-                if (input == ' ' || input == '\n') { break; }
+                output += std::to_string(upper_priority_queue.top()) + '\n';
 
+                upper_priority_queue.pop();
+                upper_priority_queue_size--;
+            }
+            else
+            {
+                output += std::to_string(lower_priority_queue.top()) + '\n';
+
+                lower_priority_queue.pop();
+                lower_priority_queue_size--;
+            }
+
+            scanf("%c", &input);
+
+        }
+        else if (input >= '0' && input <= '9')
+        {
+            number += input - '0';
+            while ((input = getchar_unlocked()) != '\n')
+            {
                 number = number * 10 + input - '0';
             }
 
@@ -64,19 +74,7 @@ int main()
 
             lower_priority_queue_size = lower_priority_queue.size();
             upper_priority_queue_size = upper_priority_queue.size();
-
-
-            if (lower_priority_queue_size == upper_priority_queue_size)
-            {
-                medianSum += (upper_priority_queue.top() + lower_priority_queue.top()) / 2;
-            }
-            else
-            {
-                medianSum += lower_priority_queue.top();
-            }
         }
-
-        output += std::to_string(medianSum) + '\n';
     }
 
     printf("%s", output.c_str());
